@@ -36,11 +36,11 @@ kotlin {
     }
 
 
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        browser()
-        binaries.executable()
-    }
+//    @OptIn(ExperimentalWasmDsl::class)
+//    wasmJs {
+//        browser()
+//        binaries.executable()
+//    }
     
     sourceSets {
         androidMain.dependencies {
