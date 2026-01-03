@@ -1,10 +1,13 @@
 package com.example.hwanportfolio
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -15,6 +18,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.foundation.rememberScrollState
@@ -30,10 +35,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ContentDetail
@@ -41,7 +49,15 @@ import com.example.FontFamily
 import com.example.ProjectDataClass
 import hwanportfolio.composeapp.generated.resources.Res
 import hwanportfolio.composeapp.generated.resources.icon_close
+import hwanportfolio.composeapp.generated.resources.image_audi_1
+import hwanportfolio.composeapp.generated.resources.image_audi_2
+import hwanportfolio.composeapp.generated.resources.image_audi_3
+import hwanportfolio.composeapp.generated.resources.image_audi_4
+import hwanportfolio.composeapp.generated.resources.image_audi_5
+import hwanportfolio.composeapp.generated.resources.image_audi_6
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import kotlin.text.chunked
 
 @Composable
 fun ReadMeDialog(project: ProjectDataClass, onDismiss: () -> Unit) {
@@ -64,6 +80,8 @@ fun ReadMeDialog(project: ProjectDataClass, onDismiss: () -> Unit) {
                 // 상단 헤더 및 기본 정보 섹션
                 TitleAndInfoSection(project, onDismiss)
 
+                Spacer(modifier = Modifier.height(40.dp))
+
                 // 중간 구분선 및 "개발기능"
                 DevelopmentHeader()
 
@@ -79,6 +97,10 @@ fun ReadMeDialog(project: ProjectDataClass, onDismiss: () -> Unit) {
                 }
 
                 Spacer(modifier = Modifier.height(40.dp))
+
+                ExecutionScreenSection(project.screenShots)
+
+                Spacer(modifier = Modifier.height(50.dp))
             }
         }
     }
@@ -86,6 +108,8 @@ fun ReadMeDialog(project: ProjectDataClass, onDismiss: () -> Unit) {
 
 @Composable
 fun TitleAndInfoSection(project: ProjectDataClass, onDismiss: () -> Unit) {
+    val uriHandler = LocalUriHandler.current
+
     Column(modifier = Modifier.padding(horizontal = 24.dp)) {
         Box(
             modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
@@ -95,6 +119,7 @@ fun TitleAndInfoSection(project: ProjectDataClass, onDismiss: () -> Unit) {
                 text = project.title,
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily,
                 color = Color.Black
             )
 
@@ -111,17 +136,33 @@ fun TitleAndInfoSection(project: ProjectDataClass, onDismiss: () -> Unit) {
         }
 
         HorizontalDivider(
-            modifier = Modifier.padding(top = 16.dp),
+            modifier = Modifier.padding(top = 24.dp),
             thickness = 1.dp,
             color = Color(0xFFEEEEEE)
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         Column(modifier = Modifier.padding(horizontal = 8.dp)) {
-            Text(text = project.date, fontSize = 14.sp, color = Color.Gray)
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(text = project.participants, fontSize = 14.sp, color = Color.Gray)
+
+            //프로젝트 기간
+            Text(text = project.date, fontSize = 14.sp, color = Color.Gray, fontFamily = FontFamily)
+
+            //프로젝트 참여인원
+            Text(text = project.participants, fontSize = 14.sp, color = Color.Gray, fontFamily = FontFamily)
+
+            // 스토어 링크
+            ClickableText(
+                text = AnnotatedString("Github Link"),
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    fontFamily = FontFamily,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color(0xFF1E88E5),
+                    textDecoration = TextDecoration.Underline
+                ),
+                onClick = { uriHandler.openUri(project.githubLink) }
+            )
         }
     }
 }
@@ -129,12 +170,13 @@ fun TitleAndInfoSection(project: ProjectDataClass, onDismiss: () -> Unit) {
 @Composable
 fun DevelopmentHeader() {
     Column(
-        modifier = Modifier.fillMaxWidth().padding(top = 40.dp, start = 24.dp, end = 24.dp),
+        modifier = Modifier.fillMaxWidth().padding(start = 24.dp, end = 24.dp),
         horizontalAlignment = Alignment.Start
     ) {
         Text(
             text = "개발기능",
             fontSize = 26.sp,
+            fontFamily = FontFamily,
             fontWeight = FontWeight.ExtraBold,
             color = Color.Black
         )
@@ -149,28 +191,31 @@ fun DevelopmentHeader() {
 @Composable
 fun VerticalDetailBlock(detail: ContentDetail) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        // 소제목 (예: 사용자 인증)
+
         Text(
             text = detail.featTitle,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily,
             color = Color.Black,
             modifier = Modifier.padding(bottom = 12.dp)
         )
 
-        // 불렛 포인트 리스트 (세로 나열)
+
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             detail.featDetail.forEach { text ->
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         text = "• ",
                         fontSize = 15.sp,
+                        fontFamily = FontFamily,
                         fontWeight = FontWeight.Black,
                         color = Color(0xFFE91E63)
                     )
                     Text(
                         text = text,
                         fontSize = 15.sp,
+                        fontFamily = FontFamily,
                         color = Color(0xFF333333),
                         lineHeight = 22.sp
                     )
@@ -179,3 +224,61 @@ fun VerticalDetailBlock(detail: ContentDetail) {
         }
     }
 }
+
+@Composable
+fun ExecutionScreenSection(screenShots: List<DrawableResource>) {
+    if (screenShots.isEmpty()) return
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 40.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "실행화면",
+            fontSize = 26.sp,
+            fontFamily = FontFamily,
+            fontWeight = FontWeight.ExtraBold,
+            color = Color.Black
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        HorizontalDivider(
+            modifier = Modifier.padding(top = 24.dp, start = 24.dp, end = 24.dp),
+            thickness = 1.dp,
+            color = Color(0xFFEEEEEE)
+        )
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        val chunkedScreenshots = screenShots.chunked(7)
+
+        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            chunkedScreenshots.forEach { rowItems ->
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    items(rowItems) { res ->
+                        Surface(
+                            modifier = Modifier.width(140.dp).height(300.dp),
+                            shape = RoundedCornerShape(16.dp),
+                            shadowElevation = 8.dp,
+                            color = Color.White
+                        ) {
+                            Image(
+                                painter = painterResource(res),
+                                contentDescription = null,
+                                contentScale = ContentScale.Fit,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

@@ -1,5 +1,29 @@
 package com.example
 
+import hwanportfolio.composeapp.generated.resources.Res
+import hwanportfolio.composeapp.generated.resources.image_audi_1
+import hwanportfolio.composeapp.generated.resources.image_audi_2
+import hwanportfolio.composeapp.generated.resources.image_audi_3
+import hwanportfolio.composeapp.generated.resources.image_audi_4
+import hwanportfolio.composeapp.generated.resources.image_audi_5
+import hwanportfolio.composeapp.generated.resources.image_audi_6
+import hwanportfolio.composeapp.generated.resources.image_boombim_1
+import hwanportfolio.composeapp.generated.resources.image_boombim_10
+import hwanportfolio.composeapp.generated.resources.image_boombim_3
+import hwanportfolio.composeapp.generated.resources.image_boombim_2
+import hwanportfolio.composeapp.generated.resources.image_boombim_4
+import hwanportfolio.composeapp.generated.resources.image_boombim_5
+import hwanportfolio.composeapp.generated.resources.image_boombim_6
+import hwanportfolio.composeapp.generated.resources.image_boombim_7
+import hwanportfolio.composeapp.generated.resources.image_boombim_8
+import hwanportfolio.composeapp.generated.resources.image_boombim_9
+import hwanportfolio.composeapp.generated.resources.image_studymate_1
+import hwanportfolio.composeapp.generated.resources.image_studymate_2
+import hwanportfolio.composeapp.generated.resources.image_studymate_3
+import hwanportfolio.composeapp.generated.resources.image_studymate_4
+import hwanportfolio.composeapp.generated.resources.image_studymate_5
+import org.jetbrains.compose.resources.DrawableResource
+
 data class ContentDetail(
     val featTitle: String,
     val featDetail: List<String>
@@ -13,7 +37,9 @@ enum class ProjectDataClass(
     val participants: String,
     val storeUrl: String,
     val usedSkill: String,
-    val contentDetail: List<ContentDetail>
+    val githubLink: String,
+    val contentDetail: List<ContentDetail>,
+    val screenShots: List<DrawableResource> = emptyList()
 ) {
     BOOMBIM(
         title = "붐빔(Boom Bim)",
@@ -21,6 +47,19 @@ enum class ProjectDataClass(
         description = "사용자에게 지도를 통해 혼잡도를 보여주는 앱",
         content = listOf("소셜로그인을 활용한 사용자 인증", "카카오맵 연동 및 마커,클러스터링 표시","FCM을 통한 알림 연동","마이페이지 및 Api 연결"),
         participants = "7인 프로젝트(PM 1, BackEnd 2, Designer 2, Aos 1, Ios 1)",
+        githubLink = "https://github.com/swyp-app-team-4/boombim-android",
+        screenShots = listOf(
+            Res.drawable.image_boombim_1,
+            Res.drawable.image_boombim_2,
+            Res.drawable.image_boombim_3,
+            Res.drawable.image_boombim_4,
+            Res.drawable.image_boombim_5,
+            Res.drawable.image_boombim_6,
+            Res.drawable.image_boombim_7,
+            Res.drawable.image_boombim_8,
+            Res.drawable.image_boombim_9,
+            Res.drawable.image_boombim_10
+        ),
         storeUrl = "https://play.google.com/store/apps/details?id=com.boombim.android&hl=ko",
         usedSkill = "MVVM, Clean Architecture, Coroutine/Flow, Hilt(DI), Retrofit, Kakao Map SDK, Firebase FCM, Kakao Search Api, Glide, Navigation",
         contentDetail = listOf(
@@ -70,7 +109,9 @@ enum class ProjectDataClass(
         content = listOf("카카오.네이버를 활용한 사용자 인증", "버전 비교를 통한 앱 업데이트 관리","Fcm을 통한 앱 데이터 갱신 및 알림 연동","설정 기능 관련 Api 연동"),
         participants = "8인 프로젝트(BackEnd 2, Designer 2, Aos 2, Ios 2)",
         storeUrl = "https://play.google.com/store/apps/details?id=com.audiwhere.android&hl=ko",
+        githubLink = "https://github.com/Team-Where/Where-Android",
         usedSkill = "MVVM, Retrofit, okhttp, Fcm, Flow, Coroutine, Room, Datastore, Glide, Hilt, Navigation",
+        screenShots = listOf(Res.drawable.image_audi_1, Res.drawable.image_audi_2,Res.drawable.image_audi_3,Res.drawable.image_audi_4,Res.drawable.image_audi_5,Res.drawable.image_audi_6),
         contentDetail = listOf(
             ContentDetail(
                 featTitle = "사용자 인증",
@@ -109,8 +150,10 @@ enum class ProjectDataClass(
     date = "2024.04.01 ~ 2025.01.01",
     description = "멘토.멘티 매칭을 통한 학습 도움 플랫폼",
     content = listOf("게시판 기능", "SSE를 사용한 매칭 요청 알림","멘토 멘티간의 실시간 채팅 기능"),
+        screenShots = listOf(Res.drawable.image_studymate_1, Res.drawable.image_studymate_2,Res.drawable.image_studymate_3,Res.drawable.image_studymate_4,Res.drawable.image_studymate_5),
         participants = "5인 프로젝트(BackEnd 2, Aos 1, FrontEnd 2)",
     storeUrl = "https://play.google.com/store/apps/details?id=com.studymate154.studymate&hl=ko",
+        githubLink = "https://github.com/TUK2024CD-Studymate/Android",
         usedSkill = "Retrofit, okhttp, Coroutine, Stomp, EventSource, SharedPreferences, Glide",
         contentDetail = listOf(
             ContentDetail(

@@ -50,7 +50,6 @@ fun ProjectSection() {
             .padding(vertical = 80.dp, horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // 타이틀 강조 및 하단 선 추가
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 "PROJECTS",
@@ -116,6 +115,7 @@ fun ProjectCard(project: ProjectDataClass) {
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
                     color = Color(0xFFE91E63),
                     fontSize = 13.sp,
+                    fontFamily = FontFamily,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -140,27 +140,7 @@ fun ProjectCard(project: ProjectDataClass) {
                 modifier = Modifier.padding(top = 4.dp)
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
-            Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(Color(0xFFF5F5F5)))
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Text(
-                text = "담당기능",
-                fontSize = 15.sp,
-                color = Color.Black,
-                fontWeight = FontWeight.Bold
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            // 담당 기능 리스트 간격 조정
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                project.content.forEach { list ->
-                    ProjectBulletPoint(list)
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(4.dp))
 
             // 스토어 링크
             ClickableText(
@@ -173,6 +153,27 @@ fun ProjectCard(project: ProjectDataClass) {
                 ),
                 onClick = { uriHandler.openUri(project.storeUrl) }
             )
+
+            Spacer(modifier = Modifier.height(20.dp))
+            Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(Color(0xFFF5F5F5)))
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                text = "담당기능",
+                fontSize = 15.sp,
+                color = Color.Black,
+                fontFamily = FontFamily,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // 담당 기능 리스트 간격 조정
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                project.content.forEach { list ->
+                    ProjectBulletPoint(list)
+                }
+            }
 
             Spacer(modifier = Modifier.height(24.dp))
 

@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -32,23 +33,40 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 import hwanportfolio.composeapp.generated.resources.Res
+import hwanportfolio.composeapp.generated.resources.icon_calender
+import hwanportfolio.composeapp.generated.resources.icon_graduate
+import hwanportfolio.composeapp.generated.resources.icon_mail
+import hwanportfolio.composeapp.generated.resources.icon_person
+import hwanportfolio.composeapp.generated.resources.icon_phone_call
+import hwanportfolio.composeapp.generated.resources.icon_place
 import hwanportfolio.composeapp.generated.resources.image_title_background
+import org.jetbrains.compose.resources.DrawableResource
 
 @Composable
 @Preview
 fun App() {
     MaterialTheme {
         LazyColumn(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().background(Color.White)
         ) {
             item { TitleSection() }
-            item { Spacer(modifier = Modifier.height(40.dp)) }
-            item { AboutTitleSection() }
+
+            item {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(0xFFF8F9FA))
+                ) {
+                    Column {
+                        AboutTitleSection()
+                    }
+                }
+            }
+
             item { Spacer(modifier = Modifier.height(24.dp)) }
             item { ProjectSection() }
         }
     }
-
 }
 
 @Composable
@@ -111,7 +129,7 @@ fun AboutTitleSection() {
         )
 
         Spacer(modifier = Modifier.height(8.dp))
-        Box(modifier = Modifier.width(250.dp).height(2.dp).background(Color.LightGray))
+        Box(modifier = Modifier.width(270.dp).height(2.dp).background(Color.LightGray))
         Spacer(modifier = Modifier.height(40.dp))
 
         Column(
@@ -121,23 +139,23 @@ fun AboutTitleSection() {
                 .padding(horizontal = 40.dp)
         ) {
             Row(modifier = Modifier.fillMaxWidth()) {
-                AboutItem("이름", "박환", Modifier.weight(1f))
-                AboutItem("생년월일", "00.11.29", Modifier.weight(1f))
-                AboutItem("주소", "서울특별시 강동구", Modifier.weight(1f))
+                AboutItem(Res.drawable.icon_person,"이름", "박환", Modifier.weight(1f))
+                AboutItem(Res.drawable.icon_calender,"생년월일", "00.11.29", Modifier.weight(1f))
+                AboutItem(Res.drawable.icon_place,"주소", "서울특별시 강동구", Modifier.weight(1f))
             }
             Spacer(modifier = Modifier.height(20.dp))
 
             Row(modifier = Modifier.fillMaxWidth()) {
-                AboutItem("연락처", "010-7557-5986", Modifier.weight(1f))
-                AboutItem("이메일", "pahw001129@naver.com", Modifier.weight(1f))
-                AboutItem("학력", "한국공학대학교\n(컴퓨터공학부)", Modifier.weight(1f))
+                AboutItem(Res.drawable.icon_phone_call,"연락처", "010-7557-5986", Modifier.weight(1f))
+                AboutItem(Res.drawable.icon_mail,"이메일", "pahw001129@naver.com", Modifier.weight(1f))
+                AboutItem(Res.drawable.icon_graduate,"학력", "한국공학대학교(컴퓨터공학부)", Modifier.weight(1f))
             }
         }
     }
 }
 
 @Composable
-fun AboutItem(title: String, value: String, modifier: Modifier = Modifier) {
+fun AboutItem(icon: DrawableResource,title: String, value: String, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .padding(vertical = 12.dp),
@@ -146,15 +164,16 @@ fun AboutItem(title: String, value: String, modifier: Modifier = Modifier) {
     ) {
 
         Row(
-            modifier = Modifier.width(250.dp),
+            modifier = Modifier.width(270.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            Box(
-                modifier = Modifier
-                    .size(40.dp)
-                    .background(Color.LightGray, shape = androidx.compose.foundation.shape.CircleShape)
-            )
+           Icon(
+               painterResource(icon),
+               contentDescription = null,
+               modifier = Modifier.size(30.dp),
+               tint = Color.Unspecified
+           )
 
             Spacer(modifier = Modifier.width(16.dp))
 
