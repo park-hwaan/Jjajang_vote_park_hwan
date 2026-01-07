@@ -30,6 +30,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.example.FontFamily
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -147,12 +151,17 @@ fun AboutTitleSection() {
             horizontalArrangement = Arrangement.Center
         ) {
             // 1. 증명 사진 영역
-            Image(
-                painter = painterResource(Res.drawable.image_profile),
+            AsyncImage(
+                model = ImageRequest.Builder(LocalPlatformContext.current)
+                    .data(Res.drawable.image_profile)
+                    .crossfade(true)
+                    .build(),
                 contentDescription = "Profile Image",
                 modifier = Modifier
-                    .size(250.dp),
-                contentScale = ContentScale.Fit
+                    .size(250.dp)
+                    .clip(RoundedCornerShape(12.dp)),
+                contentScale = ContentScale.Crop,
+                alpha = 1f
             )
 
             Spacer(modifier = Modifier.width(60.dp))

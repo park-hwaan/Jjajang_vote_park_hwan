@@ -1,5 +1,7 @@
 package com.example.hwanportfolio
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,9 +34,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.AnnotatedString
@@ -44,6 +51,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
+import coil3.compose.AsyncImagePainter
 import com.example.ContentDetail
 import com.example.FontFamily
 import com.example.ProjectDataClass
@@ -227,6 +236,10 @@ fun VerticalDetailBlock(detail: ContentDetail) {
 
 @Composable
 fun ExecutionScreenSection(screenShots: List<DrawableResource>) {
+    var isLoaded by remember { mutableStateOf(false) }
+    val alpha by animateFloatAsState(targetValue = if (isLoaded) 1f else 0f, animationSpec = tween(500))
+    val scale by animateFloatAsState(targetValue = if (isLoaded) 1f else 0.95f, animationSpec = tween(500))
+
     if (screenShots.isEmpty()) return
 
     Column(
@@ -268,11 +281,18 @@ fun ExecutionScreenSection(screenShots: List<DrawableResource>) {
                             shadowElevation = 8.dp,
                             color = Color.White
                         ) {
-                            Image(
-                                painter = painterResource(res),
+                            AsyncImage(
+                                model = res,
                                 contentDescription = null,
-                                contentScale = ContentScale.Fit,
-                                modifier = Modifier.fillMaxSize()
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .graphicsLayer(alpha = alpha, scaleX = scale, scaleY = scale),
+                                onState = { state ->
+                                    if (state is AsyncImagePainter.State.Success) {
+                                        isLoaded = true
+                                    }
+                                },
+                                contentScale = ContentScale.Fit
                             )
                         }
                     }
